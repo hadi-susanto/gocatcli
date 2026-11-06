@@ -2,7 +2,6 @@ package catalog
 
 import (
 	"encoding/json"
-	"os"
 	"time"
 
 	"github.com/deadc0de6/gocatcli/internal/log"
@@ -44,7 +43,7 @@ func (b *JSONBackend) Save(path string, t *tree.Tree) error {
 	}
 
 	log.Debugf("write tree to \"%s\"...", path)
-	err = os.WriteFile(path, content, os.ModePerm)
+	err = writeFile(path, content)
 	if err != nil {
 		return err
 	}
@@ -55,7 +54,7 @@ func (b *JSONBackend) Save(path string, t *tree.Tree) error {
 // LoadTree loads a tree from json
 func (b *JSONBackend) LoadTree(path string) (*tree.Tree, error) {
 	log.Debugf("loading catalog from %s", path)
-	fd, err := os.Open(path)
+	fd, err := openReader(path)
 	if err != nil {
 		return nil, err
 	}

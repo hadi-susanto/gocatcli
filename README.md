@@ -61,6 +61,7 @@ gocatcli tree
   * [Mount the catalog filesystem](#mount-filesystem)
   * [Edit storage](#edit-storage)
   * [Output formats](#output-formats)
+  * [Compressed catalog](#compressed-catalog)
   * [Convert catcli catalog](#convert-catcli-catalog)
 
 * [From catcli to gocatcli](#from-catcli-to-gocatcli)
@@ -352,6 +353,25 @@ Following commands allow to edit a storage and its fields:
 * `script`: generates a script to handle matches
 * `debug`: debug output
 * `filename`: only filename
+
+## Compressed catalog
+
+Catalogs of large hierarchies can get big. If the catalog path ends with `.gz`,
+the catalog is saved gzip-compressed (`json` or `toml` is picked from the extension
+before `.gz`, for example `my.catalog.gz` or `my.toml.gz`).
+Compressed catalogs are detected from their content when loading, so they are
+read transparently whatever their name.
+
+```bash
+$ gocatcli index -c gocatcli.catalog.gz <some-path>
+$ gocatcli -c gocatcli.catalog.gz ls
+## or
+$ export GOCATCLI_CATALOG=gocatcli.catalog.gz
+```
+
+An existing catalog can be compressed with `gzip gocatcli.catalog` and
+decompressed with `gunzip gocatcli.catalog.gz`.
+Note that compressed catalogs cannot be diffed when versioned with git.
 
 ## Convert catcli catalog
 

@@ -1,8 +1,6 @@
 package catalog
 
 import (
-	"path/filepath"
-
 	"github.com/deadc0de6/gocatcli/internal/tree"
 )
 
@@ -44,7 +42,7 @@ func (c *Catalog) LoadTree() (*tree.Tree, error) {
 // NewCatalog creates a new catalog
 func NewCatalog(path string) *Catalog {
 	var b Backend
-	ext := filepath.Ext(path)
+	ext := baseExt(path)
 	switch ext {
 	case catalogExt, jsonExt:
 		b = NewJSONBackend()
