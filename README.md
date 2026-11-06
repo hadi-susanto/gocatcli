@@ -340,6 +340,7 @@ Remove a storage and its children with the `storage rm` command.
 
 Following commands allow to edit a storage and its fields:
 
+* `rename`: change the storage name
 * `meta`: storage description
 * `tag`: add a tag to the storage
 * `untag`: remove a tag from the storage

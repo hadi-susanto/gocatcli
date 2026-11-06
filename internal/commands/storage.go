@@ -44,6 +44,14 @@ var (
 		RunE:   storageMeta,
 	}
 
+	storageRenameCmd = &cobra.Command{
+		Use:    "rename <storage-name> <new-name>",
+		Short:  "Rename a storage",
+		Args:   cobra.ExactArgs(2),
+		PreRun: preRun(true),
+		RunE:   storageRename,
+	}
+
 	storageTagCmd = &cobra.Command{
 		Use:    "tag <storage-name> <tag>",
 		Short:  "Add tag to storage",
@@ -67,6 +75,7 @@ var (
 func init() {
 	storageCmd.AddCommand(storageRemoveCmd)
 	storageCmd.AddCommand(storageMetaCmd)
+	storageCmd.AddCommand(storageRenameCmd)
 	storageCmd.AddCommand(storageTagCmd)
 	storageCmd.AddCommand(storageUntagCmd)
 	storageCmd.AddCommand(storageListCmd)
@@ -76,6 +85,7 @@ func init() {
 	// everything that affects tree gets the indent option
 	storageRemoveCmd.PersistentFlags().BoolVarP(&storageOptIndent, "indent", "I", true, "do not indent json")
 	storageMetaCmd.PersistentFlags().BoolVarP(&storageOptIndent, "indent", "I", true, "do not indent json")
+	storageRenameCmd.PersistentFlags().BoolVarP(&storageOptIndent, "indent", "I", true, "do not indent json")
 	storageTagCmd.PersistentFlags().BoolVarP(&storageOptIndent, "indent", "I", true, "do not indent json")
 	storageUntagCmd.PersistentFlags().BoolVarP(&storageOptIndent, "indent", "I", true, "do not indent json")
 
@@ -109,6 +119,33 @@ func storageMeta(_ *cobra.Command, args []string) error {
 	}
 
 	storage.SetMeta(meta)
+	ret := storageSave()
+	listStorages()
+	return ret
+}
+
+// storageRename renames a storage; children reference
+// their storage by ID so only the name changes
+func storageRename(_ *cobra.Command, args []string) error {
+	name := args[0]
+	newName := args[1]
+
+	if len(newName) < 1 {
+		return fmt.Errorf("new storage name cannot be empty")
+	}
+
+	storage := rootTree.GetStorageByName(name)
+	if storage == nil {
+		return fmt.Errorf("no such storage %s", name)
+	}
+	if name == newName {
+		return nil
+	}
+	if rootTree.GetStorageByName(newName) != nil {
+		return fmt.Errorf("storage %s already exists", newName)
+	}
+
+	storage.Name = newName
 	ret := storageSave()
 	listStorages()
 	return ret

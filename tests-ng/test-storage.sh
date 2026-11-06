@@ -77,6 +77,29 @@ cnt=$(wc -l "${out}" | awk '{print $1}')
 grep "tags:tag2" "${out}" || (echo "tag1 not removed" && exit 1)
 
 # ===================================================
+title ">>> test rename <<<"
+"${bin}" --debug -c "${catalog}" storage rename testsng renamed | sed -e 's/\x1b\[[0-9;]*m//g' > "${out}"
+cat "${out}"
+cnt=$(wc -l "${out}" | awk '{print $1}')
+[ "${cnt}" != "2" ] && echo "expecting 2 lines (${cnt})" && exit 1
+grep -q "^storage renamed" "${out}" || (echo "storage not renamed" && exit 1)
+grep -q "^storage testsng" "${out}" && echo "old name still present" && exit 1
+# children still reachable under the new name
+cnt=$("${bin}" -c "${catalog}" ls renamed | sed -e 's/\x1b\[[0-9;]*m//g' | sed '/^$/d' | wc -l | awk '{print $1}')
+[ "${cnt}" = "0" ] && echo "no children under renamed storage" && exit 1
+
+title ">>> test rename collision <<<"
+if "${bin}" -c "${catalog}" storage rename renamed internal > /dev/null 2>&1; then
+  echo "rename to an existing name should fail" && exit 1
+fi
+if "${bin}" -c "${catalog}" storage rename doesnotexist foo > /dev/null 2>&1; then
+  echo "rename of a missing storage should fail" && exit 1
+fi
+
+title ">>> test rename back <<<"
+"${bin}" -c "${catalog}" storage rename renamed testsng > /dev/null
+
+# ===================================================
 title ">>> test rm storage <<<"
 "${bin}" --debug -c "${catalog}" storage rm -f testsng | sed -e 's/\x1b\[[0-9;]*m//g' > "${out}"
 expected="1"
