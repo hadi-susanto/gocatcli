@@ -1,0 +1,51 @@
+# Fork-only goreleaser config (main-ex branch of hadi-susanto/gocatcli).
+# goreleaser release --clean --config .goreleaser-ex.yaml
+version: 2
+project_name: gocatcli-ex
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./cmd/gocatcli-ex/
+    binary: gocatcli-ex
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - arm
+      - arm64
+      - "386"
+      - amd64
+    ldflags:
+      - -s -w -X main.commit={{ .ShortCommit }}
+archives:
+  - formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    files:
+      - LICENSE
+      - README.md
+changelog:
+  use: git
+  sort: asc
+  filters:
+    exclude:
+      - '^Merge '          # upstream sync merges
+      - '^bump version'    # upstream version bumps
+  groups:
+    - title: Features
+      regexp: '^feat'
+      order: 0
+    - title: Fixes
+      regexp: '^fix'
+      order: 1
+    - title: Others
+      order: 999

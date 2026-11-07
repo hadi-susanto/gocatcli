@@ -2,7 +2,8 @@
 
 > **Fork note:** the `main-ex` branch of [hadi-susanto/gocatcli](https://github.com/hadi-susanto/gocatcli)
 > is a dedicated branch forked from [deadc0de6/gocatcli](https://github.com/deadc0de6/gocatcli).
-> It may contain personal changes not (yet) available upstream, and its version carries an `-ex` suffix.
+> It may contain personal changes not (yet) available upstream and builds a separate `gocatcli-ex` binary
+> (`make -f Makefile.ex`) versioned `x.y.z-<commit>`, where `x.y.z` is the upstream version.
 > It is still kept up to date with the upstream `main` branch.
 
 [![Tests Status](https://github.com/deadc0de6/gocatcli/workflows/tests/badge.svg)](https://github.com/deadc0de6/gocatcli/actions)
