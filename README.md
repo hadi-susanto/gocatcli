@@ -1,5 +1,9 @@
 # gocatcli
 
+> **Fork note:** the `main-ex` branch of [hadi-susanto/gocatcli](https://github.com/hadi-susanto/gocatcli)
+> is a dedicated branch forked from [deadc0de6/gocatcli](https://github.com/deadc0de6/gocatcli).
+> It may contain personal changes not (yet) available upstream, and its version carries an `-ex` suffix.
+> It is still kept up to date with the upstream `main` branch.
 
 [![Tests Status](https://github.com/deadc0de6/gocatcli/workflows/tests/badge.svg)](https://github.com/deadc0de6/gocatcli/actions)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
