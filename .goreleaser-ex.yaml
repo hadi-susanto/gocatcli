@@ -1,4 +1,4 @@
-# Fork-only goreleaser config (main-ex branch of hadi-susanto/gocatcli).
+# Fork-only goreleaser config (main-ex branch of hadi-susanto/gocatcli-ex).
 # goreleaser release --clean --config .goreleaser-ex.yaml
 version: 2
 project_name: gocatcli-ex

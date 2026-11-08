@@ -1,5 +1,5 @@
 /*
-Fork-only entry point (main-ex branch of hadi-susanto/gocatcli).
+Fork-only entry point (main-ex branch of hadi-susanto/gocatcli-ex).
 Builds the gocatcli-ex binary, see Makefile.ex.
 */
 

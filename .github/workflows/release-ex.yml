@@ -1,5 +1,5 @@
-# Fork-only workflow (main-ex branch of hadi-susanto/gocatcli).
-# Push a tag like v1.3.2-ex.1 to build and publish the gocatcli-ex release.
+# Fork-only workflow (main-ex branch of hadi-susanto/gocatcli-ex).
+# `make -f Makefile.ex release` pushes a v<x.y.z>-ex-YY-MM-DD tag, which builds and publishes the gocatcli-ex release.
 # goreleaser creates the GitHub release with GITHUB_TOKEN, which does not
 # trigger the upstream release-binaries / aur-release workflows.
 name: release-ex

@@ -1,4 +1,4 @@
-# Fork-only makefile (main-ex branch of hadi-susanto/gocatcli).
+# Fork-only makefile (main-ex branch of hadi-susanto/gocatcli-ex).
 # Builds the gocatcli-ex binary: make -f Makefile.ex
 
 GOBIN=$(shell pwd)/bin

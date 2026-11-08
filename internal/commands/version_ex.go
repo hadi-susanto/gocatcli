@@ -1,5 +1,5 @@
 /*
-Fork-only file (main-ex branch of hadi-susanto/gocatcli).
+Fork-only file (main-ex branch of hadi-susanto/gocatcli-ex).
 Kept in its own file so upstream changes in root.go never conflict.
 */
 
