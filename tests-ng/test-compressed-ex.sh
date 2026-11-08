@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# author: deadc0de6 (https://github.com/deadc0de6)
-# Copyright (c) 2024, deadc0de6
+# Fork-only test (main-ex branch of hadi-susanto/gocatcli-ex)
 #
 # test compressed (gzip) catalogs
 #

@@ -2,6 +2,7 @@ package catalog
 
 import (
 	"encoding/json"
+	"os"
 	"time"
 
 	"github.com/deadc0de6/gocatcli/internal/log"
@@ -43,7 +44,7 @@ func (b *JSONBackend) Save(path string, t *tree.Tree) error {
 	}
 
 	log.Debugf("write tree to \"%s\"...", path)
-	err = writeFile(path, content)
+	err = writeFile(path, content, os.ModePerm)
 	if err != nil {
 		return err
 	}

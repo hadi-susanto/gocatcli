@@ -33,6 +33,7 @@ archives:
     files:
       - LICENSE
       - README.md
+      - README-ex.md
 changelog:
   use: git
   sort: asc

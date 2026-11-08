@@ -2,6 +2,7 @@ package catalog
 
 import (
 	"bytes"
+	"os"
 	"time"
 
 	"github.com/deadc0de6/gocatcli/internal/log"
@@ -35,7 +36,7 @@ func (b *TOMLBackend) Save(path string, t *tree.Tree) error {
 	}
 
 	log.Debugf("write tree to \"%s\"...", path)
-	err = writeFile(path, content)
+	err = writeFile(path, content, os.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -46,19 +47,8 @@ func (b *TOMLBackend) Save(path string, t *tree.Tree) error {
 // LoadTree loads a tree from toml
 func (b *TOMLBackend) LoadTree(path string) (*tree.Tree, error) {
 	log.Debugf("loading catalog from %s", path)
-	fd, err := openReader(path)
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		err := fd.Close()
-		if err != nil {
-			log.Error(err)
-		}
-	}()
-
 	var tree tree.Tree
-	_, err = toml.NewDecoder(fd).Decode(&tree)
+	_, err := decodeTOMLFile(path, &tree)
 	if err != nil {
 		return nil, err
 	}

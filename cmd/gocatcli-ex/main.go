@@ -25,7 +25,7 @@ func main() {
 	}
 	commands.ApplyEx(binName, commit)
 
-	err := commands.Execute()
+	var err = commands.Execute()
 	if err != nil {
 		log.Error(err)
 		os.Exit(1)
@@ -35,11 +35,12 @@ func main() {
 // vcsCommit is the fallback when built without ldflags: it reads the
 // git revision embedded by `go build` in a git checkout (Go >= 1.18).
 func vcsCommit() string {
-	info, ok := debug.ReadBuildInfo()
+	var info, ok = debug.ReadBuildInfo()
 	if !ok {
 		return "dev"
 	}
-	rev, dirty := "", false
+	var rev string
+	var dirty bool
 	for _, s := range info.Settings {
 		switch s.Key {
 		case "vcs.revision":
