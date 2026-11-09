@@ -17,6 +17,7 @@ require (
 	github.com/rivo/tview v0.0.0-20220916081518-2e69b7385a37
 	github.com/spf13/cobra v1.6.0
 	github.com/spf13/viper v1.13.0
+	golang.org/x/sys v0.39.0
 )
 
 require (
@@ -65,7 +66,6 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
 	golang.org/x/exp v0.0.0-20220428152302-39d4317da171 // indirect
-	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/term v0.38.0 // indirect
 	golang.org/x/text v0.32.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
