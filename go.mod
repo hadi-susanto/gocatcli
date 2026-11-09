@@ -17,6 +17,7 @@ require (
 	github.com/rivo/tview v0.0.0-20220916081518-2e69b7385a37
 	github.com/spf13/cobra v1.6.0
 	github.com/spf13/viper v1.13.0
+	github.com/winfsp/cgofuse v1.6.0
 	golang.org/x/sys v0.39.0
 )
 
