@@ -56,11 +56,20 @@ Renaming to an existing storage name is refused.
 
 # Mountpoint handling
 
-On top of upstream's clean unmount on Ctrl-C, `gocatcli-ex mount`:
+On Linux/macOS (Windows: see [Mount on Windows](#mount-on-windows)).
 
-* creates the mountpoint directory if it does not exist
+Since upstream 1.3.3, `mount` unmounts cleanly on Ctrl-C, `SIGTERM` or `SIGHUP`.
+If the mount is busy and cannot be unmounted, it keeps serving and a second
+Ctrl-C forces the exit, which leaves a stale mount behind.
+
+Before mounting, `gocatcli-ex mount` also:
+
+* creates the mountpoint directory (and its parents) if it does not exist
+* refuses a mountpoint that exists but is not a directory
 * detects a stale mount left by a crash or a forced exit
-  ("Transport endpoint is not connected") and unmounts it before mounting
+  ("Transport endpoint is not connected"), even when the kernel still serves
+  the mountpoint from its cache, and unmounts it; if that fails, it suggests
+  `fusermount -uz <mountpoint>`
 
 # Mount on Windows
 
