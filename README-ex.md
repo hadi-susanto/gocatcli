@@ -8,7 +8,9 @@ Everything in the upstream [README](README.md) still applies.
 * [Compressed catalog](#compressed-catalog)
 * [Rename a storage](#rename-a-storage)
 * [Mountpoint handling](#mountpoint-handling)
+* [Mount on Windows](#mount-on-windows)
 * [Versioning and releases](#versioning-and-releases)
+* [Credits](#credits)
 
 # Installation
 
@@ -60,6 +62,25 @@ On top of upstream's clean unmount on Ctrl-C, `gocatcli-ex mount`:
 * detects a stale mount left by a crash or a forced exit
   ("Transport endpoint is not connected") and unmounts it before mounting
 
+# Mount on Windows
+
+Upstream `gocatcli` has no Windows mount. `gocatcli-ex` mounts catalogs on Windows
+through [WinFsp](https://winfsp.dev), which must be installed first
+(get the installer from the [WinFsp releases](https://winfsp.dev/rel/)).
+Without it, `mount` stops with an error explaining how to install it.
+
+```bash
+> gocatcli-ex mount X:                 # on a drive letter
+> gocatcli-ex mount *                  # on the first free drive letter
+> gocatcli-ex mount C:\mnt\catalog     # on a directory that does not exist yet
+```
+
+* the mount is read-only; files show their size, date and mode, but their content is empty
+  (a catalog only stores metadata)
+* a directory mountpoint must not exist, WinFsp creates it (missing parents are created)
+* press Ctrl-C to unmount
+* on Linux/macOS mount still uses FUSE, as upstream
+
 # Versioning and releases
 
 `gocatcli-ex --version` prints `x.y.z-<commit>`, where `x.y.z` is the upstream version.
@@ -68,3 +89,14 @@ Releases are tagged `v<x.y.z>-ex-YY-MM-DD` (`.2`, `.3`... for extra releases the
 ```bash
 $ make -f Makefile.ex release   # tag + push, GitHub Actions publishes the release
 ```
+
+# Credits
+
+The Windows mount is built on:
+
+* **WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos**
+  ([github.com/winfsp/winfsp](https://github.com/winfsp/winfsp)),
+  GPLv3 with a FLOSS exception. WinFsp is not bundled: install it from
+  [winfsp.dev](https://winfsp.dev/rel/).
+* **cgofuse**, Copyright (c) 2017-2022 Bill Zissimopoulos
+  ([github.com/winfsp/cgofuse](https://github.com/winfsp/cgofuse)), MIT license.
