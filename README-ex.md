@@ -18,9 +18,19 @@ Pick a binary in the [releases](https://github.com/hadi-susanto/gocatcli-ex/rele
 
 Or compile it yourself
 ```bash
+$ git clone -b main-ex https://github.com/hadi-susanto/gocatcli-ex
+$ cd gocatcli-ex
 $ make -f Makefile.ex
 $ ./bin/gocatcli-ex --help
+## or install it in $GOBIN (default ~/go/bin)
+$ go install ./cmd/gocatcli-ex
 ```
+
+Note that `go install github.com/hadi-susanto/gocatcli-ex/cmd/gocatcli-ex@<version>`
+does not work: the fork keeps upstream's module path (`github.com/deadc0de6/gocatcli`)
+so that upstream changes merge without conflicts, and Go refuses a module whose
+declared path does not match the repository it is fetched from.
+`go install` has to be run from a clone, as above.
 
 `gocatcli-ex` uses the same catalog format, default catalog name and
 `GOCATCLI_` environment variables as `gocatcli`, so both can be installed side by side.
