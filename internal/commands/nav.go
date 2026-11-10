@@ -6,6 +6,8 @@ Copyright (c) 2024, deadc0de6
 package commands
 
 import (
+	"path/filepath"
+
 	"github.com/deadc0de6/gocatcli/internal/log"
 	"github.com/deadc0de6/gocatcli/internal/navigator"
 	"github.com/deadc0de6/gocatcli/internal/node"
@@ -46,11 +48,23 @@ func nav(_ *cobra.Command, args []string) error {
 
 	var startPath string
 	if len(startNodes) > 0 {
-		startPath = startNodes[0].GetPath()
+		startPath = catalogPath(startNodes[0])
 	}
 	n.Start(startPath)
 
 	return nil
+}
+
+// catalogPath returns the "<storage>/<relpath>" path the navigator expects
+func catalogPath(n node.Node) string {
+	if n.GetType() == node.FileTypeStorage {
+		return n.GetName()
+	}
+	sto := rootTree.GetStorageNode(n)
+	if sto == nil {
+		return n.GetPath()
+	}
+	return filepath.Join(sto.GetName(), n.GetPath())
 }
 
 func callback(t *tree.Tree) func(string, bool, bool) (bool, []*stringer.Entry) {
