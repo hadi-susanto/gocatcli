@@ -138,8 +138,8 @@ func (a *Navigator) createList() {
 
 	// current working directory
 	a.textarea = tview.NewTextView()
-	a.textarea.SetText(a.path)
-	a.textarea.SetTextColor(tcell.ColorSlateGray)
+	a.textarea.SetDynamicColors(true)
+	a.textarea.SetText(a.title())
 
 	// create layout
 	content := tview.NewGrid()
@@ -157,8 +157,17 @@ func (a *Navigator) createList() {
 func (a *Navigator) updateList() []*stringer.Entry {
 	a.list.Clear()
 	entries := a.fillList()
-	a.textarea.SetText(a.path)
+	a.textarea.SetText(a.title())
 	return entries
+}
+
+// title of the current location
+func (a *Navigator) title() string {
+	path := a.path
+	if len(path) < 1 {
+		path = "/"
+	}
+	return "[gray]Current Location:[-] [::b]" + tview.Escape(path) + "[::-]"
 }
 
 // show modal help
