@@ -18,6 +18,10 @@ import (
 	"github.com/anacrolix/fuse"
 )
 
+// permissionHint completes the error when a mountpoint (e.g. under
+// /mnt or /media) cannot be created by the current user
+var permissionHint = "run with sudo, or mount under a directory you own"
+
 // PrepareMountpoint creates the mountpoint if missing and cleans up
 // a stale mount left by a previous crash or forced exit. The returned
 // cleanup removes the directories it created, to be called after unmount.

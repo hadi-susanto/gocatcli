@@ -17,6 +17,10 @@ import (
 
 var driveLetterRe = regexp.MustCompile(`^[A-Za-z]:$`)
 
+// permissionHint completes the error when the mountpoint parents
+// cannot be created by the current user
+var permissionHint = "run as administrator, mount on a drive letter (e.g. X:) or under a directory you own"
+
 // PrepareMountpoint checks WinFsp is installed and the mountpoint is usable:
 // a drive letter ("X:"), "*" (first free drive) or a directory that does
 // not exist yet (its parents are created). The returned cleanup removes

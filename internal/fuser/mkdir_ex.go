@@ -7,6 +7,8 @@ those are removed after unmount, like a removable drive.
 package fuser
 
 import (
+	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -43,6 +45,9 @@ func mkdirTracked(dir string) ([]string, error) {
 		var err = os.Mkdir(missing[i], 0o755)
 		if err != nil {
 			removeCreated(created)
+			if errors.Is(err, os.ErrPermission) && os.Geteuid() != 0 {
+				err = fmt.Errorf("%w (%s)", err, permissionHint)
+			}
 			return nil, err
 		}
 		created = append(created, missing[i])
