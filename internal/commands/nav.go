@@ -74,7 +74,7 @@ func callback(t *tree.Tree) func(string, bool, bool) (bool, []*stringer.Entry) {
 
 		log.Debugf("nav getting list of files for path \"%s\"", path)
 		m := &stringer.PrintMode{
-			FullPath:    longMode,
+			FullPath:    false,
 			Long:        longMode,
 			InlineColor: true,
 			RawSize:     false,
