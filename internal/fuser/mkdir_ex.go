@@ -50,6 +50,7 @@ func mkdirTracked(dir string) ([]string, error) {
 			}
 			return nil, err
 		}
+		chownToInvoker(missing[i])
 		created = append(created, missing[i])
 	}
 	return created, nil
