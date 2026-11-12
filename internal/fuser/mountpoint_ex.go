@@ -19,31 +19,33 @@ import (
 )
 
 // PrepareMountpoint creates the mountpoint if missing and cleans up
-// a stale mount left by a previous crash or forced exit
-func PrepareMountpoint(mountpoint string) error {
+// a stale mount left by a previous crash or forced exit. The returned
+// cleanup removes the directories it created, to be called after unmount.
+func PrepareMountpoint(mountpoint string) (func(), error) {
 	var fi, err = os.Stat(mountpoint)
 	switch {
 	case err == nil:
 		if !fi.IsDir() {
-			return fmt.Errorf("%s is not a directory", mountpoint)
+			return noCleanup, fmt.Errorf("%s is not a directory", mountpoint)
 		}
 		// stat may still be served from the kernel cache on a dead
 		// fuse mount, reading the directory tells for sure
 		if isStaleMount(mountpoint) {
-			return unmountStale(mountpoint)
+			return noCleanup, unmountStale(mountpoint)
 		}
-		return nil
+		return noCleanup, nil
 	case os.IsNotExist(err):
-		err = os.MkdirAll(mountpoint, 0o755)
+		var created []string
+		created, err = mkdirTracked(mountpoint)
 		if err != nil {
-			return fmt.Errorf("create mountpoint: %w", err)
+			return noCleanup, fmt.Errorf("create mountpoint: %w", err)
 		}
 		log.Infof("created mountpoint %s", mountpoint)
-		return nil
+		return func() { removeCreated(created) }, nil
 	case errors.Is(err, syscall.ENOTCONN):
-		return unmountStale(mountpoint)
+		return noCleanup, unmountStale(mountpoint)
 	default:
-		return err
+		return noCleanup, err
 	}
 }
 

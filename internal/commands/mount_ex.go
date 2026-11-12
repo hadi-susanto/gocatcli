@@ -12,13 +12,15 @@ import (
 )
 
 // wrap upstream's mount command: prepare the mountpoint before mounting
+// and remove the directories created for it once unmounted
 func init() {
 	var upstreamRun = mountCmd.RunE
 	mountCmd.RunE = func(cmd *cobra.Command, args []string) error {
-		var err = fuser.PrepareMountpoint(args[0])
+		var cleanup, err = fuser.PrepareMountpoint(args[0])
 		if err != nil {
 			return err
 		}
+		defer cleanup()
 		return upstreamRun(cmd, args)
 	}
 }

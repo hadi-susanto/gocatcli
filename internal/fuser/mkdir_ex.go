@@ -13,6 +13,9 @@ import (
 	"github.com/deadc0de6/gocatcli/internal/log"
 )
 
+// noCleanup is returned when no mountpoint directory was created
+func noCleanup() {}
+
 // mkdirTracked creates dir and its missing parents, returning the
 // created directories from the topmost to dir itself. Nothing is left
 // behind on failure.
