@@ -81,6 +81,21 @@ Before mounting, `gocatcli-ex mount` also:
   the mountpoint from its cache, and unmounts it; if that fails, it suggests
   `fusermount -uz <mountpoint>`
 
+Like a removable drive, the directories created for the mountpoint are removed
+once unmounted. Only those are removed (deepest first, and only while empty), a
+mountpoint that already existed is left in place. A forced exit leaves them behind.
+
+A regular user cannot create a mountpoint under protected locations such as
+`/mnt` or `/media`, use `sudo` there:
+
+```bash
+$ sudo gocatcli-ex mount /mnt/catalog
+```
+
+When run through `sudo`, the created directories belong to the user who ran
+`sudo`, and the mount uses `allow_other` so that user can browse it
+(files are listed as owned by root).
+
 # Mount on Windows
 
 Upstream `gocatcli` has no Windows mount. `gocatcli-ex` mounts catalogs on Windows
@@ -97,6 +112,7 @@ Without it, `mount` stops with an error explaining how to install it.
 * the mount is read-only; files show their size, date and mode, but their content is empty
   (a catalog only stores metadata)
 * a directory mountpoint must not exist, WinFsp creates it (missing parents are created)
+  and removes it on unmount, the parents created for it are removed as well
 * press Ctrl-C to unmount
 * on Linux/macOS mount still uses FUSE, as upstream
 
