@@ -99,7 +99,9 @@ func (h *FuseDir) Attr(_ context.Context, a *fuse.Attr) error {
 		a.Mtime = time.Unix(h.current.GetMAccess(), 0)
 		a.Ctime = time.Unix(h.current.GetMAccess(), 0)
 		mode := iofs.FileMode(helpers.ModeStrToInt(h.current.GetMode()))
-		log.ToFile(logPath, fmt.Sprintf("mode %s -> %v", h.current.GetMode(), mode))
+		if h.fs.debugMode {
+			log.ToFile(logPath, fmt.Sprintf("mode %s -> %v", h.current.GetMode(), mode))
+		}
 		a.Mode = os.ModeDir | mode
 	}
 

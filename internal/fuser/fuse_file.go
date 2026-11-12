@@ -39,6 +39,8 @@ func (h *FuseFile) Attr(_ context.Context, a *fuse.Attr) error {
 	a.Atime = time.Unix(h.current.GetMAccess(), 0)
 	a.Mtime = time.Unix(h.current.GetMAccess(), 0)
 	a.Mode = fs.FileMode(helpers.ModeStrToInt(h.current.GetMode()))
-	log.ToFile(logPath, fmt.Sprintf("mode %s -> %v", h.current.GetMode(), a.Mode))
+	if h.fs.debugMode {
+		log.ToFile(logPath, fmt.Sprintf("mode %s -> %v", h.current.GetMode(), a.Mode))
+	}
 	return nil
 }
