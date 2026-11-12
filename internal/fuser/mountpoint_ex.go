@@ -1,3 +1,5 @@
+//go:build !windows
+
 /*
 Fork-only file (main-ex branch of hadi-susanto/gocatcli-ex).
 Kept in its own file so upstream changes in fuser.go never conflict.

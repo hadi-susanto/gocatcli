@@ -23,9 +23,9 @@ build-linux:
 	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=linux GOARCH=amd64 go build $(INSTALL_FLAG) -o $(BIN)-linux-amd64 $(SRC)
 
 build-windows:
-	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=arm go build $(INSTALL_FLAG) -o $(BIN)-windows-arm $(SRC)
-	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=386 go build $(INSTALL_FLAG) -o $(BIN)-windows-386 $(SRC)
-	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=amd64 go build $(INSTALL_FLAG) -o $(BIN)-windows-amd64 $(SRC)
+	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=arm64 go build $(INSTALL_FLAG) -o $(BIN)-windows-arm64.exe $(SRC)
+	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=386 go build $(INSTALL_FLAG) -o $(BIN)-windows-386.exe $(SRC)
+	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=windows GOARCH=amd64 go build $(INSTALL_FLAG) -o $(BIN)-windows-amd64.exe $(SRC)
 
 build-darwin:
 	CGO_ENABLED=$(CGO) GO111MODULE=on GOOS=darwin GOARCH=amd64 go build $(INSTALL_FLAG) -o $(BIN)-darwin-amd64 $(SRC)
