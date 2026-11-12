@@ -49,7 +49,8 @@ run_nav() {
   cmd="$(printf '%q ' "${bin}" --nocolor -c "${catalog}" nav "$@")"
   (sleep 1; printf 'q') \
     | TERM=xterm timeout 10 script -qec "stty cols 200 rows 20; ${cmd}" /dev/null \
-    | sed -e 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | tr -s ' ' > "${out}"
+    | sed -e 's/\x1b\[[0-9;?]*[a-zA-Z]//g' -e 's/\x1b]8;;\x1b\\//g' -e 's/\x1b(B//g' \
+    | tr -s ' ' > "${out}"
   cat_file "${out}"
 }
 
@@ -58,6 +59,8 @@ run_nav() {
 title ">>> nav single storage without path <<<"
 run_nav
 grep -q 'top-file' "${out}" || (echo "storage content not shown" && exit 1)
+grep -q 'Current Location: mystorage' "${out}" || (echo "wrong title" && exit 1)
+grep -q 'mystorage/top-file' "${out}" && echo "entry shown with full path" && exit 1
 
 # nav with a directory path starts inside that directory
 # ===================================================
@@ -65,6 +68,8 @@ title ">>> nav with directory path <<<"
 run_nav "mystorage/sub"
 grep -q 'sub-file' "${out}" || (echo "directory content not shown" && exit 1)
 grep -q 'top-file' "${out}" && echo "storage content shown instead of directory" && exit 1
+grep -q 'Current Location: mystorage/sub' "${out}" || (echo "wrong title" && exit 1)
+grep -q 'mystorage/sub/sub-file' "${out}" && echo "entry shown with full path" && exit 1
 
 echo "test $(basename "${0}") OK!"
 exit 0
