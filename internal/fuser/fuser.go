@@ -45,8 +45,10 @@ func (f *FS) Root() (fs.Node, error) {
 func Mount(theTree *tree.Tree, mountpoint string, debug bool) error {
 	c, err := fuse.Mount(
 		mountpoint,
-		fuse.FSName("gocatcli"),
-		fuse.Subtype("gocatcli"),
+		mountOptionsEx(
+			fuse.FSName("gocatcli"),
+			fuse.Subtype("gocatcli"),
+		)...,
 	)
 	if err != nil {
 		return err

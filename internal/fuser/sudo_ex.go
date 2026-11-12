@@ -12,6 +12,8 @@ import (
 	"strconv"
 
 	"github.com/deadc0de6/gocatcli/internal/log"
+
+	"github.com/anacrolix/fuse"
 )
 
 // sudoInvoker returns the user who ran gocatcli through sudo
@@ -37,4 +39,14 @@ func chownToInvoker(dir string) {
 	if err != nil {
 		log.Warnf("could not change owner of %s: %s", dir, err)
 	}
+}
+
+// mountOptionsEx lets the user who ran sudo access the mount, root
+// may use allow_other without user_allow_other in /etc/fuse.conf
+func mountOptionsEx(opts ...fuse.MountOption) []fuse.MountOption {
+	var _, _, ok = sudoInvoker()
+	if ok {
+		opts = append(opts, fuse.AllowOther())
+	}
+	return opts
 }
